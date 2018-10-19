@@ -10,7 +10,7 @@ namespace :load do
     set :sneakers_log, -> { File.join(shared_path, 'log', 'sneakers.log') }
     # set :sneakers_timeout, -> 10
     # TODO: Rename to plural
-    set :sneakers_roles, [:app]
+    set :sneakers_roles, [:apps]
     set :sneakers_processes, 1
     set :sneakers_workers, false # if this is false it will cause Capistrano to exit
     # rename to sneakers_config
@@ -45,7 +45,7 @@ namespace :sneakers do
       sneakers_switch_user(role) do
         if test("[ -d #{current_path} ]")
           sneakers_each_process_with_index(true) do |pid_file, idx|
-            if pid_file_exists?(pid_file) && sneakers_process_exists?(pid_file)
+            if sneakers_pid_file_exists?(pid_file) && sneakers_process_exists?(pid_file)
               quiet_sneakers(pid_file)
             end
           end
