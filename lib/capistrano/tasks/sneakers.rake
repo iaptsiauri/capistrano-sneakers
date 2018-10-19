@@ -10,7 +10,7 @@ namespace :load do
     set :sneakers_log, -> { File.join(shared_path, 'log', 'sneakers.log') }
     # set :sneakers_timeout, -> 10
     # TODO: Rename to plural
-    set :sneakers_roles, [:apps]
+    set :sneakers_roles, [:app]
     set :sneakers_processes, 1
     set :sneakers_workers, false # if this is false it will cause Capistrano to exit
     # rename to sneakers_config
@@ -18,6 +18,9 @@ namespace :load do
     # Rbenv and RVM integration
     set :rbenv_map_bins, fetch(:rbenv_map_bins).to_a.concat(%w(sneakers))
     set :rvm_map_bins, fetch(:rvm_map_bins).to_a.concat(%w(sneakers))
+    # systemd integration
+    set :service_unit_name, "sneakers-#{fetch(:stage)}.service"
+    set :upstart_service_name, "sneakers"
   end
 end
 
