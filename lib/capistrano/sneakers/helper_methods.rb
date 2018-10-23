@@ -37,10 +37,10 @@ module Capistrano
           execute :kill, "-USR1 `cat #{pid_file}`"
         else
           begin
-            execute :bundle, :exec, :sneakersctl, 'quiet', "#{pid_file}"
+            execute :bundle, :exec, :rake, 'quiet', "#{pid_file}"
           rescue SSHKit::Command::Failed
             # If gems are not installed eq(first deploy) and sneakers_default_hooks as active
-            warn 'sneakersctl not found (ignore if this is the first deploy)'
+            warn 'rake not found (ignore if this is the first deploy)'
           end
         end
       end
@@ -53,10 +53,10 @@ module Capistrano
             if fetch(:sneakers_use_signals)
               background :kill, "-TERM `cat #{pid_file}`"
             else
-              background :bundle, :exec, :sneakersctl, 'stop', "#{pid_file}", fetch(:sneakers_timeout)
+              background :bundle, :exec, :rake, 'stop', "#{pid_file}", fetch(:sneakers_timeout)
             end
           else
-            execute :bundle, :exec, :sneakersctl, 'stop', "#{pid_file}", fetch(:sneakers_timeout)
+            execute :bundle, :exec, :rake, 'stop', "#{pid_file}", fetch(:sneakers_timeout)
           end
         end
       end
@@ -71,7 +71,7 @@ module Capistrano
           info "Starting the sneakers processes"
 
           with rails_env: fetch(:sneakers_env), workers: workers do
-            execute :bundle, :exec, :sneakersctl, 'sneakers:run'
+            execute :bundle, :exec, :rake, 'sneakers:run'
           end
         end
       end
