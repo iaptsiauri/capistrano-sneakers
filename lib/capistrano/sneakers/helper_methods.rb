@@ -71,7 +71,7 @@ module Capistrano
           info "Starting the sneakers processes"
 
           with rails_env: fetch(:sneakers_env), workers: workers do
-            rake 'sneakers:run'
+            execute :bundle, :exec, :sneakersctl, 'sneakers:run'
           end
         end
       end
